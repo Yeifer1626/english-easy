@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENGLISH EASY</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✦ ENGLISH EASY</div>
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#juegos">Juegos</a>
+        <a href="#vocabulario">Vocabulario</a>
+    </nav>
+</header>
+
+<section class="inicio" id="inicio">
+    <div class="texto">
+        <span class="etiqueta">⭐ APRENDE A TU RITMO</span>
+        <h1>¡Aprende inglés ya <span>jugando!</span></h1>
+        <p>
+            Descubre nuevas palabras, supera retos
+            y gana estrellas mientras te diviertes.
+            ¡Tu aventura comienza aquí!
+        </p>
+        <button onclick="document.getElementById('juegos').scrollIntoView({behavior:'smooth'})">
+            Explorar juegos →
+        </button>
+     <div class="mascota">
+    <img src="img/imags.png" alt="Mascota de English Easy">
+</div>
+</section>
+
+<section class="juegos" id="juegos">
+    <h2>Elige tu aventura ✨</h2>
+    <p>¡Cada juego es una oportunidad para aprender!</p>
+
+    <div class="tarjetas">
+        <article class="tarjeta">
+            <div class="icono">🔎</div>
+            <h3>Sopa de letras</h3>
+            <p>Encuentra palabras ocultas en inglés.</p>
+            <button onclick="abrirSopa()">Jugar →</button>
+        </article>
+
+        <article class="tarjeta">
+            <div class="icono">🧠</div>
+            <h3>Juego de memoria</h3>
+            <p>Une palabras con sus imágenes.</p>
+            <button onclick="abrirMemoria()">Jugar →</button>
+        </article>
+
+        <article class="tarjeta">
+            <div class="icono">🎧</div>
+            <h3>Escucha y aprende</h3>
+            <p>Escucha una palabra en inglés y elige su significado.</p>
+            <button onclick="abrirEscucha()">Empezar →</button>
+        </article>
+
+        <article class="tarjeta" id="vocabulario">
+            <div class="icono">📚</div>
+            <h3>Vocabulario</h3>
+            <p>Aprende palabras nuevas cada día.</p>
+            <button onclick="abrirVocabulario()">Aprender →</button>
+        </article>
+    </div>
+</section>
+
+
+<section class="sopa-juego" id="escucha-juego" hidden>
+    <div class="sopa-cabecera">
+        <div>
+            <span class="sopa-etiqueta">🎧 PRACTICA TU INGLÉS</span>
+            <h2>Escucha y aprende</h2>
+            <p>Escucha la palabra y selecciona su significado en español.</p>
+        </div>
+        <button class="sopa-cerrar" onclick="cerrarEscucha()">Volver a los juegos ✕</button>
+    </div>
+    <div class="escucha-panel">
+        <p id="escucha-progreso">Pregunta 1</p>
+        <button id="escucha-audio" class="escucha-audio" onclick="repetirAudio()">🔊 Escuchar palabra</button>
+        <div id="escucha-opciones" class="escucha-opciones"></div>
+        <p id="escucha-mensaje" aria-live="polite">¡Tú puedes!</p>
+        <p id="escucha-puntos">⭐ Puntos: 0</p>
+        <button id="escucha-siguiente" onclick="siguientePregunta()" hidden>Siguiente →</button>
+    </div>
+</section>
+
+<section class="sopa-juego" id="vocabulario-juego" hidden>
+    <div class="sopa-cabecera">
+        <div>
+            <span class="sopa-etiqueta">📚 APRENDE INGLÉS</span>
+            <h2>Vocabulario</h2>
+            <p>Elige una categoría para comenzar.</p>
+        </div>
+        <button class="sopa-cerrar" onclick="cerrarVocabulario()">
+            Volver a los juegos ✕
+        </button>
+    </div>
+
+    <div id="categorias-vocabulario">
+        <button onclick="mostrarPalabras('1')">🐶 Animales</button>
+        <button onclick="mostrarPalabras('2')">🍎 Frutas</button>
+        <button onclick="mostrarPalabras('3')">🎨 Colores</button>
+        <button onclick="mostrarPalabras('4')">🏠 La casa</button>
+        <button onclick="mostrarPalabras('5')">🔢 Números</button>
+    </div>
+
+    <div id="palabras-vocabulario"></div>
+</section>
+
+<section class="sopa-juego" id="sopa-juego" hidden>
+    <div class="sopa-cabecera">
+        <div>
+            <span class="sopa-etiqueta">🎯 MINI RETO</span>
+            <h2>Word Search · Sopa de letras</h2>
+            <p>Encuentra las palabras en inglés. Pulsa la primera letra y luego la última.</p>
+        </div>
+        <button class="sopa-cerrar" onclick="cerrarSopa()">Volver a los juegos ✕</button>
+    </div>
+
+    <div class="sopa-contenido">
+        <div class="sopa-tablero" id="sopa-tablero" aria-label="Cuadrícula de sopa de letras"></div>
+        <aside class="sopa-lateral">
+            <h3>🔎 Encuentra estas palabras</h3>
+            <p class="sopa-ayuda">Pueden aparecer de izquierda a derecha o de arriba abajo.</p>
+            <ul class="sopa-palabras" id="sopa-palabras"></ul>
+            <p class="sopa-puntos">⭐ Palabras encontradas: <strong id="sopa-progreso">0 / 6</strong></p>
+            <p class="sopa-mensaje" id="sopa-mensaje" aria-live="polite">¡Tú puedes!</p>
+            <button onclick="nuevaSopa()">🔄 Nueva sopa</button>
+        </aside>
+    </div>
+</section>
+
+<style>
+.sopa-juego{max-width:1100px;margin:35px auto;padding:28px;background:#fff;border-radius:24px;box-shadow:0 12px 35px #34205c16;color:#28213d}
+.sopa-juego[hidden]{display:none}
+.sopa-cabecera{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:24px}
+.sopa-etiqueta{color:#7c4dce;font-weight:800;font-size:.8rem;letter-spacing:1px}
+.sopa-cabecera h2{margin:8px 0;font-size:clamp(1.5rem,3vw,2.2rem)}
+.sopa-cabecera p{margin:0;color:#706a7d}
+.sopa-cerrar{background:#f0eaff!important;color:#5e35b1!important}
+.sopa-contenido{display:grid;grid-template-columns:minmax(280px,1fr) minmax(220px,.7fr);gap:28px;align-items:start}
+.sopa-tablero{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;max-width:560px;width:100%;margin:auto}
+.sopa-celda{aspect-ratio:1;border:0;border-radius:8px;background:#f2effb;color:#302449;font-weight:800;font-size:clamp(.75rem,2vw,1.1rem);cursor:pointer;padding:0;min-width:0}
+.sopa-celda:hover{background:#e4d8ff}
+.sopa-celda.seleccionada{background:#b69af7;color:#fff}
+.sopa-celda.encontrada{background:#b8f0d0;color:#145c3b}
+.sopa-lateral{background:#faf8ff;border-radius:18px;padding:20px}
+.sopa-lateral h3{margin-top:0}
+.sopa-ayuda{font-size:.9rem;color:#716a7d}
+.sopa-palabras{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sopa-palabras li{background:#fff;border:1px solid #e8e0f7;padding:9px 10px;border-radius:10px;font-weight:700}
+.sopa-palabras li small{display:block;font-weight:400;color:#7a7289}
+.sopa-palabras li.completada{text-decoration:line-through;background:#e5f9ed;color:#247348;border-color:#b8e8ca}
+.sopa-puntos{margin-top:20px}
+.sopa-mensaje{min-height:24px;color:#7044c5;font-weight:700}
+@media(max-width:720px){.sopa-juego{margin:20px 12px;padding:17px}.sopa-cabecera{display:block}.sopa-cerrar{margin-top:14px}.sopa-contenido{grid-template-columns:1fr;gap:18px}.sopa-tablero{gap:3px}.sopa-celda{border-radius:5px}.sopa-lateral{padding:16px}}
+
+.escucha-panel{max-width:650px;margin:0 auto;padding:25px;background:#faf8ff;border-radius:20px;text-align:center;color:#302449}
+.escucha-opciones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:22px 0}
+.escucha-opciones button{margin:0;background:#eee5ff;color:#42266b;border:1px solid #dfd0fa}
+.escucha-opciones button:disabled{opacity:.9;transform:none}
+.escucha-opciones button.correcta{background:#c9f4d9;color:#145c3b}
+.escucha-opciones button.incorrecta{background:#ffe0e5;color:#8a2334}
+.escucha-audio{background:#b783ff;color:#1b1030}
+#escucha-mensaje{min-height:25px;color:#7044c5;font-weight:700}
+@media(max-width:600px){.escucha-panel{padding:16px}.escucha-opciones{grid-template-columns:1fr}}
+
+</style>
+
+<script>
+const palabrasSopa = [
+   
+    {en:"APPLE", es:"manzana"},
+    {en:"HOUSE", es:"casa"},
+    {en:"WATER", es:"agua"},
+    {en:"MUSIC", es:"música"},
+    {en:"GREEN", es:"verde"},
+    {en:"BREAD", es:"pan"},
+    {en:"CAT", es:"gato"},
+    {en:"DOG", es:"perro"},
+    {en:"SUN", es:"sol"},
+    {en:"MOON", es:"luna"},
+    {en:"STAR", es:"estrella"},
+    {en:"FISH", es:"pez"},
+    {en:"BIRD", es:"pájaro"},
+    {en:"BOOK", es:"libro"},
+    {en:"MILK", es:"leche"},
+    {en:"TREE", es:"árbol"},
+    {en:"BLUE", es:"azul"},
+    {en:"PINK", es:"rosado"},
+    {en:"FIRE", es:"fuego"},
+    {en:"RAIN", es:"lluvia"},
+    {en:"CAKE", es:"pastel"},
+    {en:"RICE", es:"arroz"},
+    {en:"FROG", es:"rana"},
+    {en:"BEAR", es:"oso"},
+    {en:"LION", es:"león"},
+    {en:"DUCK", es:"pato"},
+    {en:"FARM", es:"granja"},
+    {en:"DOOR", es:"puerta"},
+    {en:"HAND", es:"mano"},
+    {en:"FOOD", es:"comida"}
+];
+let sopaLetras = [];
+let sopaColocadas = [];
+let sopaInicio = null;
+let sopaHalladas = new Set();
+
+function abrirSopa() {
+    const juego = document.getElementById("sopa-juego");
+    juego.hidden = false;
+    juego.scrollIntoView({behavior:"smooth", block:"start"});
+    if (!sopaLetras.length) nuevaSopa();
+}
+function cerrarSopa() {
+    document.getElementById("sopa-juego").hidden = true;
+    document.getElementById("juegos").scrollIntoView({behavior:"smooth"});
+}
+function nuevaSopa() {
+    const tam = 10;
+    sopaLetras = Array.from({length:tam}, () => Array(tam).fill(""));
+    sopaColocadas = [];
+    sopaHalladas = new Set();
+    sopaInicio = null;
+
+    // Colocamos las palabras horizontal o verticalmente, sin cruzarlas.
+   const seleccionadas = [...palabrasSopa]
+    .sort(() => Math.random() - 0.5).slice(0, 6);
+
+seleccionadas.forEach(p => {
+        let puesta = false;
+        for (let intento=0; intento<200 && !puesta; intento++) {
+            const vertical = Math.random() < 0.5;
+            const fila = Math.floor(Math.random() * (vertical ? tam-p.en.length+1 : tam));
+            const col = Math.floor(Math.random() * (vertical ? tam : tam-p.en.length+1));
+            const coords = Array.from(p.en, (_,i) => [fila+(vertical?i:0), col+(vertical?0:i)]);
+            if (coords.every(([r,c]) => !sopaLetras[r][c] || sopaLetras[r][c] === p.en[coords.findIndex(([rr,cc])=>rr===r&&cc===c)])) {
+                coords.forEach(([r,c],i) => sopaLetras[r][c] = p.en[i]);
+                sopaColocadas.push({palabra:p.en, coords});
+                puesta = true;
+            }
+        }
+    });
+    for(let r=0;r<tam;r++) for(let c=0;c<tam;c++) {
+        if(!sopaLetras[r][c]) sopaLetras[r][c] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random()*26)];
+    }
+    dibujarSopa();
+}
+function dibujarSopa() {
+    const tablero = document.getElementById("sopa-tablero");
+    tablero.innerHTML = "";
+    sopaLetras.forEach((fila,r) => fila.forEach((letra,c) => {
+        const b = document.createElement("button");
+        b.className = "sopa-celda";
+        b.textContent = letra;
+        b.dataset.r = r; b.dataset.c = c;
+        b.setAttribute("aria-label", `Fila ${r+1}, columna ${c+1}, ${letra}`);
+        b.addEventListener("click", () => elegirLetra(r,c));
+        tablero.appendChild(b);
+    }));
+    const lista = document.getElementById("sopa-palabras");
+    lista.innerHTML = "";
+    palabrasSopa.forEach(p => {
+        const li = document.createElement("li");
+        li.id = "palabra-"+p.en;
+        li.innerHTML = `${p.en}<small>${p.es}</small>`;
+        lista.appendChild(li);
+    });
+    actualizarProgreso();
+    document.getElementById("sopa-mensaje").textContent = "¡Busca las 6 palabras!";
+}
+function elegirLetra(r,c) {
+    const celda = document.querySelector(`.sopa-celda[data-r="${r}"][data-c="${c}"]`);
+    if (!sopaInicio) {
+        document.querySelectorAll(".sopa-celda.seleccionada").forEach(x=>x.classList.remove("seleccionada"));
+        sopaInicio = [r,c];
+        celda.classList.add("seleccionada");
+        document.getElementById("sopa-mensaje").textContent = "Ahora pulsa la última letra de la palabra.";
+        return;
+    }
+    const [r1,c1] = sopaInicio;
+    const dr = Math.sign(r-r1), dc = Math.sign(c-c1);
+    const distancia = Math.max(Math.abs(r-r1),Math.abs(c-c1));
+    let texto = "", coords = [];
+    if ((r===r1 || c===c1) && distancia < 10) {
+        for(let i=0;i<=distancia;i++) {
+            const rr=r1+dr*i, cc=c1+dc*i;
+            texto += sopaLetras[rr][cc];
+            coords.push([rr,cc]);
+        }
+        const inverso = texto.split("").reverse().join("");
+        const hallada = sopaColocadas.find(p => !sopaHalladas.has(p.palabra) && (p.palabra===texto || p.palabra===inverso));
+        if (hallada) {
+            sopaHalladas.add(hallada.palabra);
+            hallada.coords.forEach(([rr,cc]) => {
+                const x=document.querySelector(`.sopa-celda[data-r="${rr}"][data-c="${cc}"]`);
+                if(x) x.classList.add("encontrada");
+            });
+            document.getElementById("palabra-"+hallada.palabra).classList.add("completada");
+            document.getElementById("sopa-mensaje").innerHTML =
+    "¡Muy bien! Encontraste " + hallada.palabra +
+    " 🎉 <button onclick=\"hablarPalabra('" + hallada.palabra + "')\">🔊 Escuchar</button>";        } else {
+            document.getElementById("sopa-mensaje").textContent = "No coincide con una palabra. ¡Inténtalo otra vez!";
+        }
+    } else {
+        document.getElementById("sopa-mensaje").textContent = "Por ahora busca en horizontal o vertical.";
+    }
+    document.querySelectorAll(".sopa-celda.seleccionada").forEach(x=>x.classList.remove("seleccionada"));
+    sopaInicio = null;
+    actualizarProgreso();
+}
+function actualizarProgreso() {
+    document.getElementById("sopa-progreso").textContent = `${sopaHalladas.size} / ${palabrasSopa.length}`;
+    if(sopaHalladas.size === palabrasSopa.length) document.getElementById("sopa-mensaje").textContent = "¡Excelente! Encontraste todas las palabras. 🌟";
+}
+
+const vocabulario = {
+    "1": [
+        ["DOG", "Perro", "🐶"],
+        ["CAT", "Gato", "🐱"],
+        ["BIRD", "Pájaro", "🐦"],
+        ["FISH", "Pez", "🐟"]
+    ],
+    "2": [
+        ["APPLE", "Manzana", "🍎"],
+        ["BANANA", "Banano", "🍌"],
+        ["GRAPE", "Uva", "🍇"],
+        ["ORANGE", "Naranja", "🍊"]
+    ],
+    "3": [
+        ["RED", "Rojo", "🔴"],
+        ["BLUE", "Azul", "🔵"],
+        ["GREEN", "Verde", "🟢"],
+        ["YELLOW", "Amarillo", "🟡"]
+    ],
+    "4": [
+        ["HOUSE", "Casa", "🏠"],
+        ["DOOR", "Puerta", "🚪"],
+        ["TABLE", "Mesa", "🪑"],
+        ["BED", "Cama", "🛏️"]
+    ],
+    "5": [
+        ["ONE", "Uno", "1️⃣"],
+        ["TWO", "Dos", "2️⃣"],
+        ["THREE", "Tres", "3️⃣"],
+        ["FOUR", "Cuatro", "4️⃣"]
+    ]
+};
+
+ 
+
+function abrirVocabulario() {
+    const cuadro = document.getElementById("vocabulario-juego");
+    cuadro.hidden = false;
+    cuadro.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function cerrarVocabulario() {
+    document.getElementById("vocabulario-juego").hidden = true;
+    document.getElementById("juegos").scrollIntoView({ behavior: "smooth" });
+}
+
+function mostrarPalabras(categoria) {
+    const palabras = vocabulario[categoria];
+    const contenedor = document.getElementById("palabras-vocabulario");
+
+    contenedor.innerHTML = "";
+
+    palabras.forEach(p => {
+        contenedor.innerHTML += `
+            <div style="display:inline-block; background:#f2effb; color:#302449;
+            padding:20px; margin:8px; border-radius:15px; text-align:center;">
+                <div style="font-size:35px;">${p[2]}</div>
+                <h3>${p[0]}</h3>
+                <p style="color:#5e35b1;">${p[1]}</p>
+                <button onclick="hablarPalabra('${p[0]}')">🔊 Escuchar</button>
+            </div>
+        `;
+    });
+}
+
+
+function hablarPalabra(palabra) {
+    speechSynthesis.cancel();
+
+    const voz = new SpeechSynthesisUtterance(
+        palabra.toLowerCase()
+    );
+
+    voz.lang = "en-US";
+    voz.rate = 0.85;
+    voz.pitch = 1;
+
+    const voces = speechSynthesis.getVoices();
+    const vozIngles = voces.find(v => v.lang.startsWith("en"));
+
+    if (vozIngles) {
+        voz.voice = vozIngles;
+    }
+
+    speechSynthesis.speak(voz);
+}
+
+
+
+    
+
+
+
+const preguntasEscucha = [
+    ["DOG", "Perro"], ["CAT", "Gato"], ["BIRD", "Pájaro"], ["FISH", "Pez"],
+    ["APPLE", "Manzana"], ["BANANA", "Banano"], ["GRAPE", "Uva"], ["ORANGE", "Naranja"],
+    ["RED", "Rojo"], ["BLUE", "Azul"], ["GREEN", "Verde"], ["YELLOW", "Amarillo"],
+    ["HOUSE", "Casa"], ["DOOR", "Puerta"], ["TABLE", "Mesa"], ["BED", "Cama"],
+    ["ONE", "Uno"], ["TWO", "Dos"], ["THREE", "Tres"], ["FOUR", "Cuatro"]
+];
+const totalPreguntasEscucha = preguntasEscucha.length;
+let preguntasPendientes = [];
+let preguntaActual = null;
+let numeroPregunta = 0;
+let puntosEscucha = 0;
+let respondidaEscucha = false;
+
+function abrirEscucha() {
+    document.getElementById("escucha-juego").hidden = false;
+    document.getElementById("escucha-juego").scrollIntoView({behavior:"smooth", block:"start"});
+    numeroPregunta = 0;
+    puntosEscucha = 0;
+    preguntasPendientes = [...preguntasEscucha].sort(() => Math.random() - 0.5);
+    document.getElementById("escucha-audio").hidden = false;
+    document.getElementById("escucha-opciones").hidden = false;
+    document.getElementById("escucha-siguiente").textContent = "Siguiente →";
+    document.getElementById("escucha-siguiente").onclick = siguientePregunta;
+    siguientePregunta();
+}
+function cerrarEscucha() {
+    speechSynthesis.cancel();
+    document.getElementById("escucha-juego").hidden = true;
+    document.getElementById("juegos").scrollIntoView({behavior:"smooth"});
+}
+function repetirAudio() {
+    if (preguntaActual) hablarPalabra(preguntaActual[0]);
+}
+function siguientePregunta() {
+    if (numeroPregunta >= totalPreguntasEscucha) {
+        finalizarEscucha();
+        return;
+    }
+    preguntaActual = preguntasPendientes[numeroPregunta];
+    respondidaEscucha = false;
+    numeroPregunta++;
+    document.getElementById("escucha-progreso").textContent = "Pregunta " + numeroPregunta + " de " + totalPreguntasEscucha;
+    document.getElementById("escucha-mensaje").textContent = "Escucha con atención y elige la respuesta.";
+    document.getElementById("escucha-puntos").textContent = "⭐ Puntos: " + puntosEscucha + " / " + totalPreguntasEscucha;
+    document.getElementById("escucha-siguiente").hidden = true;
+    document.getElementById("escucha-siguiente").textContent = numeroPregunta === totalPreguntasEscucha ? "Ver resultado" : "Siguiente →";
+
+    const opciones = [preguntaActual[1]];
+    const otras = preguntasEscucha.map(p => p[1]).filter(t => t !== preguntaActual[1]);
+    while (opciones.length < 4 && otras.length) {
+        const indice = Math.floor(Math.random() * otras.length);
+        opciones.push(otras.splice(indice, 1)[0]);
+    }
+    opciones.sort(() => Math.random() - 0.5);
+    const contenedor = document.getElementById("escucha-opciones");
+    contenedor.innerHTML = "";
+    opciones.forEach(opcion => {
+        const boton = document.createElement("button");
+        boton.textContent = opcion;
+        boton.onclick = () => responderEscucha(boton, opcion);
+        contenedor.appendChild(boton);
+    });
+    setTimeout(repetirAudio, 250);
+}
+function responderEscucha(boton, opcion) {
+    if (respondidaEscucha) return;
+    respondidaEscucha = true;
+    document.querySelectorAll("#escucha-opciones button").forEach(b => b.disabled = true);
+    if (opcion === preguntaActual[1]) {
+        puntosEscucha++;
+        boton.classList.add("correcta");
+        document.getElementById("escucha-mensaje").textContent = "¡Correcto! " + preguntaActual[0] + " significa " + preguntaActual[1] + ". 🎉";
+    } else {
+        boton.classList.add("incorrecta");
+        document.querySelectorAll("#escucha-opciones button").forEach(b => {
+            if (b.textContent === preguntaActual[1]) b.classList.add("correcta");
+        });
+        document.getElementById("escucha-mensaje").textContent = "La respuesta era " + preguntaActual[1] + ". ¡Sigue practicando!";
+    }
+    document.getElementById("escucha-puntos").textContent = "⭐ Puntos: " + puntosEscucha + " / " + totalPreguntasEscucha;
+    document.getElementById("escucha-siguiente").hidden = false;
+}
+function finalizarEscucha() {
+    speechSynthesis.cancel();
+    document.getElementById("escucha-progreso").textContent = "¡Ronda terminada!";
+    document.getElementById("escucha-audio").hidden = true;
+    document.getElementById("escucha-opciones").hidden = true;
+    document.getElementById("escucha-mensaje").textContent = "¡Buen trabajo! Terminaste las " + totalPreguntasEscucha + " preguntas.";
+    document.getElementById("escucha-puntos").textContent = "🏆 Resultado final: " + puntosEscucha + " / " + totalPreguntasEscucha + " puntos";
+    const boton = document.getElementById("escucha-siguiente");
+    boton.textContent = "Jugar otra vez ↻";
+    boton.onclick = abrirEscucha;
+    boton.hidden = false;
+}
+
+</script>
+ 
+ <!-- Botón para apoyar ENGLISH EASY -->
+<button id="botonApoyar" class="boton-apoyar">💜 Apoyar</button>
+
+<!-- Ventana de apoyo -->
+<div id="ventanaApoyo" class="ventana-apoyo">
+  <div class="contenido-apoyo">
+    <button id="cerrarApoyo" class="cerrar-apoyo">✕</button>
+
+    <h2>💜 Apoya ENGLISH EASY</h2>
+    <p>Si te gusta aprender con nosotros, puedes ayudarnos a seguir creciendo.</p>
+
+    <h3>Nequi</h3>
+    <p>Llave Bre-B:</p>
+    <p id="llaveNequi">@NEQUIYEI30641</p>
+    <button id="copiarLlave">Copiar llave</button>
+
+    <img src="img/nequiqr.png" alt="Código QR de Nequi" class="qr-nequi">
+    <p>También puedes escanear el QR desde otro dispositivo.</p>
+
+    <h3>PayPal</h3>
+    <a id="enlacePayPal" href="https://www.paypal.com/donate/?hosted_button_id=EW5T6U323H3W2"
+       target="_blank" rel="noopener noreferrer">Donar con PayPal</a>
+  </div>
+</div>
+
+<footer>
+    ENGLISH EASY · Learn, play and grow 💜
+</footer>
+<style>
+.memoria-juego {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-width: 500px;
+    margin: 25px auto;
+}
+.carta-memoria {
+    background: #49247c;
+    color: white;
+    border: 2px solid #d5b4ff;
+    border-radius: 12px;
+    padding: 20px 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+.carta-memoria:hover {
+    background: #7041a8;
+}
+#zonaMemoria {
+    display: none;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+</style>
+
+<section id="zonaMemoria">
+    <h2>🧠 Juego de memoria</h2>
+    <p>Encuentra las parejas de inglés y español.</p>
+    <p id="mensajeMemoria">Parejas encontradas: 0 de 6</p>
+    <div class="memoria-juego" id="tableroMemoria"></div>
+    <button onclick="iniciarMemoria()">🔄 Volver a jugar</button>
+    <button onclick="cerrarMemoria()">Volver al menú</button>
+</section>
+
+<script>
+const parejasMemoria = [
+    ["APPLE", "MANZANA"],
+    ["HOUSE", "CASA"],
+    ["WATER", "AGUA"],
+    ["CAT", "GATO"],
+    ["DOG", "PERRO"],
+    ["BOOK", "LIBRO"]
+];
+
+let seleccionMemoria = [];
+let parejasEncontradas = 0;
+let bloqueadoMemoria = false;
+
+function abrirMemoria() {
+    document.getElementById("zonaMemoria").style.display = "block";
+    iniciarMemoria();
+    document.getElementById("zonaMemoria").scrollIntoView();
+}
+
+function cerrarMemoria() {
+    document.getElementById("zonaMemoria").style.display = "none";
+}
+
+function iniciarMemoria() {
+    const tablero = document.getElementById("tableroMemoria");
+    tablero.innerHTML = "";
+    seleccionMemoria = [];
+    parejasEncontradas = 0;
+    bloqueadoMemoria = false;
+
+    document.getElementById("mensajeMemoria").textContent =
+        "Parejas encontradas: 0 de 6";
+
+    let cartas = [];
+
+    parejasMemoria.forEach((pareja, indice) => {
+        pareja.forEach((palabra, lado) => {
+            cartas.push({
+                palabra: palabra,
+                pareja: indice,
+                lado: lado
+            });
+        });
+    });
+
+    cartas.sort(() => Math.random() - 0.5);
+
+    cartas.forEach(carta => {
+        const boton = document.createElement("button");
+        boton.className = "carta-memoria";
+        boton.textContent = "?";
+        boton.dataset.pareja = carta.pareja;
+        boton.dataset.lado = carta.lado;
+
+        boton.onclick = function() {
+            if (bloqueadoMemoria ||
+                boton.classList.contains("encontrada") ||
+                seleccionMemoria.includes(boton)) {
+                return;
+            }
+
+            boton.textContent = carta.palabra;
+            seleccionMemoria.push(boton);
+
+            if (seleccionMemoria.length === 2) {
+                const primera = seleccionMemoria[0];
+                const segunda = seleccionMemoria[1];
+
+                if (primera.dataset.pareja === segunda.dataset.pareja &&
+                    primera.dataset.lado !== segunda.dataset.lado) {
+
+                    primera.classList.add("encontrada");
+                    segunda.classList.add("encontrada");
+                    parejasEncontradas++;
+                    seleccionMemoria = [];
+
+                    document.getElementById("mensajeMemoria").textContent =
+                        "Parejas encontradas: " + parejasEncontradas + " de 6";
+
+                    if (parejasEncontradas === 6) {
+                        document.getElementById("mensajeMemoria").textContent =
+                            "🎉 ¡Excelente! Encontraste todas las parejas.";
+                    }
+                } else {
+                    bloqueadoMemoria = true;
+
+                    setTimeout(() => {
+                        primera.textContent = "?";
+                        segunda.textContent = "?";
+                        seleccionMemoria = [];
+                        bloqueadoMemoria = false;
+                    }, 900);
+                }
+            }
+        };
+
+        tablero.appendChild(boton);
+    });
+}
+</script>
+<script>
+const botonApoyar = document.getElementById("botonApoyar");
+const ventanaApoyo = document.getElementById("ventanaApoyo");
+const cerrarApoyo = document.getElementById("cerrarApoyo");
+const copiarLlave = document.getElementById("copiarLlave");
+const llaveNequi = document.getElementById("llaveNequi");
+
+botonApoyar.onclick = () => {
+  ventanaApoyo.style.display = "flex";
+};
+
+cerrarApoyo.onclick = () => {
+  ventanaApoyo.style.display = "none";
+};
+
+ventanaApoyo.onclick = (e) => {
+  if (e.target === ventanaApoyo) {
+    ventanaApoyo.style.display = "none";
+  }
+};
+
+copiarLlave.onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(llaveNequi.textContent.trim());
+    copiarLlave.textContent = "¡Llave copiada!";
+  } catch (error) {
+    alert("No se pudo copiar automáticamente. Selecciona y copia la llave.");
+  }
+};
+</script>
+</body>
+</html>
